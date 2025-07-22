@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting to App...</title>
+    <script>
+      // Lấy query params
+      function getQueryParams() {
+        const params = {};
+        window.location.search
+          .substring(1)
+          .split('&')
+          .forEach(pair => {
+            const [key, value] = pair.split('=');
+            params[key] = value;
+          });
+        return params;
+      }
+      window.onload = function () {
+        const params = getQueryParams();
+        // Xây dựng deep link
+        let url = 'wdpapp://payment/success';
+        if (params.token) url += '?token=' + params.token;
+        if (params.PayerID) url += (params.token ? '&' : '?') + 'PayerID=' + params.PayerID;
+        // Chuyển hướng về app
+        window.location = url;
+        // Hiển thị thông báo fallback
+        setTimeout(function () {
+          document.getElementById('msg').innerText =
+            'Nếu không tự động chuyển về app, vui lòng bấm vào đây: ' + url;
+        }, 2000);
+      };
+    </script>
+  </head>
+  <body>
+    <h2 id="msg">Đang chuyển về ứng dụng...</h2>
+  </body>
+</html>
